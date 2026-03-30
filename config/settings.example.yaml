@@ -1,0 +1,52 @@
+model:
+  base_url: "http://10.0.0.113/v1"
+  model_name: "qwen3"
+  api_key: ""
+  timeout_seconds: 90
+  max_retries: 2
+
+workspace:
+  root: ".workspace"
+  keep_runs: 20
+
+limits:
+  max_iterations: 6
+  max_fix_loops: 3
+  max_files_changed: 50
+  max_lines_changed: 2000
+  max_tool_calls: 300
+
+commands:
+  allowlist:
+    - "^pytest(\\s|$)"
+    - "^ruff(\\s|$)"
+    - "^mypy(\\s|$)"
+    - "^python(\\s|$)"
+    - "^uv(\\s|$)"
+    - "^npm(\\s|$)"
+    - "^pnpm(\\s|$)"
+    - "^yarn(\\s|$)"
+    - "^node(\\s|$)"
+    - "^tsc(\\s|$)"
+    - "^cargo(\\s|$)"
+    - "^go(\\s|$)"
+  defaults:
+    test:
+      - "pytest -q"
+    lint:
+      - "ruff check ."
+    typecheck:
+      - "mypy ."
+    build: []
+
+github:
+  enabled: true
+  auto_open_pr: false
+
+sandbox:
+  docker_enabled: false
+  image: "python:3.11-slim"
+
+runtime:
+  dry_run: false
+  explain_mode: true

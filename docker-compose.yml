@@ -1,0 +1,17 @@
+version: "3.9"
+services:
+  api:
+    image: python:3.11-slim
+    working_dir: /workspace
+    volumes:
+      - ./:/workspace
+    environment:
+      - PYTHONUNBUFFERED=1
+      - MODEL_BASE_URL=${MODEL_BASE_URL:-http://10.0.0.113/v1}
+      - MODEL_NAME=${MODEL_NAME:-qwen3}
+      - MODEL_API_KEY=${MODEL_API_KEY:-}
+      - WORKSPACE_ROOT=${WORKSPACE_ROOT:-/workspace/.workspace}
+    command: >
+      sh -c "pip install -e .[dev] && uvicorn app.api:create_app --factory --host 0.0.0.0 --port 8000"
+    ports:
+      - "8000:8000"
